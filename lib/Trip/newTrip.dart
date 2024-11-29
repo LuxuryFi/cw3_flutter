@@ -111,6 +111,8 @@ class _NewTripState extends State<NewTrip> {
           result = "Trip saved successfully!";
         });
         clearFields();
+        Navigator.pushNamed(context, '/welcome');
+
       } else {
         setState(() {
           result =
