@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:flutter_trip_cw/Trip/Welcome.dart';
-import 'package:flutter_trip_cw/Trip/newTrip.dart';
-import 'package:flutter_trip_cw/Trip/route_name.dart';
+import 'package:flutter_course_cw/Course/Welcome.dart';
+import 'package:flutter_course_cw/Course/newCourse.dart';
+import 'package:flutter_course_cw/Course/route_name.dart';
 
 void main() {
   runApp(const TripWorm());

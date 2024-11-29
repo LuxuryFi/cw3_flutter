@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_course_cw/Course/updateCourse.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_course_cw/Course/updateCourse.dart'; // Import Update Page
 
 class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);
@@ -21,6 +23,9 @@ class _WelcomeState extends State<Welcome> {
 
   // Fetch data from the API
   Future<void> fetchClassDetails() async {
+    setState(() {
+      isLoading = true;
+    });
     final response = await http.get(Uri.parse('http://103.107.182.247:3000'));
 
     if (response.statusCode == 200) {
@@ -30,11 +35,24 @@ class _WelcomeState extends State<Welcome> {
         isLoading = false;
       });
     } else {
-      // If the request fails, handle error
       setState(() {
         isLoading = false;
       });
       throw Exception('Failed to load class details');
+    }
+  }
+
+  // Delete function to remove class detail by id from both the UI and API
+  Future<void> deleteClassDetail(String id) async {
+    final response = await http.delete(Uri.parse('http://103.107.182.247:3000/$id'));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        classDetails.removeWhere((classDetail) => classDetail['_id'] == id);
+      });
+    } else {
+      // Handle error
+      throw Exception('Failed to delete class');
     }
   }
 
@@ -50,6 +68,7 @@ class _WelcomeState extends State<Welcome> {
         DataColumn(label: Text('Price')),
         DataColumn(label: Text('Description')),
         DataColumn(label: Text('Teacher')),
+        DataColumn(label: Text('Actions')),
       ],
       rows: classDetails.map((classDetail) {
         return DataRow(cells: [
@@ -61,6 +80,34 @@ class _WelcomeState extends State<Welcome> {
           DataCell(Text(classDetail['price'].toString())),
           DataCell(Text(classDetail['description'])),
           DataCell(Text(classDetail['teacher'])),
+          DataCell(
+            Row(
+              children: [
+                // Update Button
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UpdateCourse(classDetail), // Pass classDetail to the update page
+                      ),
+                    ).then((shouldReload) {
+                      // Check if the data needs to be refreshed after update
+                      if (shouldReload == true) {
+                        fetchClassDetails(); // Refresh data after update
+                      }
+                    });
+                  },
+                ),
+                // Delete Button
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => deleteClassDetail(classDetail['_id']),
+                ),
+              ],
+            ),
+          ),
         ]);
       }).toList(),
     );
@@ -71,13 +118,13 @@ class _WelcomeState extends State<Welcome> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/newTrip');
+          Navigator.pushNamed(context, '/newCourse');
         },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: const Text('Trip CW'),
+        title: const Text('Course CW'),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -88,7 +135,7 @@ class _WelcomeState extends State<Welcome> {
         ),
         child: Center(
           child: isLoading
-              ? CircularProgressIndicator() // Show loading indicator while data is being fetched
+              ? const CircularProgressIndicator() // Show loading indicator while data is being fetched
               : Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: SingleChildScrollView(
