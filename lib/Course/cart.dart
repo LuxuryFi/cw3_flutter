@@ -87,33 +87,33 @@ class _CartViewState extends State<CartView> {
 
   // Display the cart items in a table
   Widget _buildCartItemsTable() {
-  return DataTable(
-    columnSpacing: 20.0,
-    columns: const [
-      DataColumn(label: Text('ID', style: TextStyle(fontWeight: FontWeight.bold))),
-      DataColumn(label: Text('Day of Week', style: TextStyle(fontWeight: FontWeight.bold))),
-      DataColumn(label: Text('Time', style: TextStyle(fontWeight: FontWeight.bold))),
-      DataColumn(label: Text('Capacity', style: TextStyle(fontWeight: FontWeight.bold))),
-      DataColumn(label: Text('Position', style: TextStyle(fontWeight: FontWeight.bold))),  // New column for Position
-      DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold))),
-    ],
-    rows: cartItems.map((cartItem) {
-      return DataRow(cells: [
-        DataCell(Text(cartItem['_id'])),
-        DataCell(Text(cartItem['dayOfWeek'])),
-        DataCell(Text(cartItem['time'])),
-        DataCell(Text(cartItem['capacity'].toString())),
-        DataCell(Text(cartItem['position'] ?? 'Not Set')), // Display the position
-        DataCell(
-          IconButton(
-            icon: const Icon(Icons.delete, color: Colors.red),
-            onPressed: () => deleteCartItem(cartItem['_id']),
+    return DataTable(
+      columnSpacing: 20.0,
+      columns: const [
+        DataColumn(label: Text('ID', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Day of Week', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Time', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Capacity', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Position', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold))),
+      ],
+      rows: cartItems.map((cartItem) {
+        return DataRow(cells: [
+          DataCell(Text(cartItem['_id'])),
+          DataCell(Text(cartItem['dayOfWeek'])),
+          DataCell(Text(cartItem['time'])),
+          DataCell(Text(cartItem['capacity'].toString())),
+          DataCell(Text(cartItem['position'] ?? 'Not Set')),
+          DataCell(
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () => deleteCartItem(cartItem['_id']),
+            ),
           ),
-        ),
-      ]);
-    }).toList(),
-  );
-}
+        ]);
+      }).toList(),
+    );
+  }
 
   // Delete a cart item by id
   Future<void> deleteCartItem(String id) async {
@@ -135,6 +135,16 @@ class _CartViewState extends State<CartView> {
         title: const Text('Cart View'),
         centerTitle: true,
         backgroundColor: Colors.deepPurpleAccent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate back to the Welcome page when the back button is pressed
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const Welcome()),
+            );
+          },
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(

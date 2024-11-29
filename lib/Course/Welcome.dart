@@ -82,48 +82,48 @@ class _WelcomeState extends State<Welcome> {
 
   // Display the class details in a table
   Widget _buildClassDetailsTable() {
-    return DataTable(
-      columnSpacing: 20.0,
-      columns: const [
-        DataColumn(label: Text('ID', style: TextStyle(fontWeight: FontWeight.bold))),
-        DataColumn(label: Text('Day of Week', style: TextStyle(fontWeight: FontWeight.bold))),
-        DataColumn(label: Text('Time', style: TextStyle(fontWeight: FontWeight.bold))),
-        DataColumn(label: Text('Capacity', style: TextStyle(fontWeight: FontWeight.bold))),
-        DataColumn(label: Text('Duration', style: TextStyle(fontWeight: FontWeight.bold))),
-        DataColumn(label: Text('Price', style: TextStyle(fontWeight: FontWeight.bold))),
-        DataColumn(label: Text('Description', style: TextStyle(fontWeight: FontWeight.bold))),
-        DataColumn(label: Text('Teacher', style: TextStyle(fontWeight: FontWeight.bold))),
-        DataColumn(label: Text('Position', style: TextStyle(fontWeight: FontWeight.bold))),
-        DataColumn(label: Text('Image', style: TextStyle(fontWeight: FontWeight.bold))),
-        DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold))),
-      ],
-      rows: filteredClassDetails.map((classDetail) {
-        return DataRow(cells: [
-          DataCell(Text(classDetail['_id'])),
-          DataCell(Text(classDetail['dayOfWeek'])),
-          DataCell(Text(classDetail['time'])),
-          DataCell(Text(classDetail['capacity'].toString())),
-          DataCell(Text(classDetail['duration'].toString())),
-          DataCell(Text(classDetail['price'].toString())),
-          DataCell(Text(classDetail['description'])),
-          DataCell(Text(classDetail['teacher'])),
-          DataCell(Text(classDetail['position'])),
-          DataCell(Text(classDetail['image'])),
-          DataCell(
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.add_shopping_cart, color: Colors.green),
-                  onPressed: () => addToCart(classDetail),
-                ),
-              ],
-            ),
+  return DataTable(
+    columnSpacing: 20.0,
+    columns: const [
+      DataColumn(label: Text('ID', style: TextStyle(fontWeight: FontWeight.bold))),
+      DataColumn(label: Text('Day of Week', style: TextStyle(fontWeight: FontWeight.bold))),
+      DataColumn(label: Text('Time', style: TextStyle(fontWeight: FontWeight.bold))),
+      DataColumn(label: Text('Capacity', style: TextStyle(fontWeight: FontWeight.bold))),
+      DataColumn(label: Text('Duration', style: TextStyle(fontWeight: FontWeight.bold))),
+      DataColumn(label: Text('Price', style: TextStyle(fontWeight: FontWeight.bold))),
+      DataColumn(label: Text('Description', style: TextStyle(fontWeight: FontWeight.bold))),
+      DataColumn(label: Text('Teacher', style: TextStyle(fontWeight: FontWeight.bold))),
+      DataColumn(label: Text('Position', style: TextStyle(fontWeight: FontWeight.bold))),
+      DataColumn(label: Text('Image', style: TextStyle(fontWeight: FontWeight.bold))),
+      DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold))),
+    ],
+    rows: filteredClassDetails.map((classDetail) {
+      return DataRow(cells: [
+        DataCell(Text(classDetail['_id'] ?? 'N/A')),  // Use a default value if '_id' is null
+        DataCell(Text(classDetail['dayOfWeek'] ?? 'N/A')),  // Use default value for null
+        DataCell(Text(classDetail['time'] ?? 'N/A')),  // Use default value for null
+        DataCell(Text(classDetail['capacity']?.toString() ?? 'N/A')),  // Handle null and convert to string
+        DataCell(Text(classDetail['duration']?.toString() ?? 'N/A')),  // Handle null and convert to string
+        DataCell(Text(classDetail['price']?.toString() ?? 'N/A')),  // Handle null and convert to string
+        DataCell(Text(classDetail['description'] ?? 'N/A')),  // Use default value for null
+        DataCell(Text(classDetail['teacher'] ?? 'N/A')),  // Use default value for null
+        DataCell(Text(classDetail['position'] ?? 'N/A')),  // Use default value for null
+        DataCell(Text(classDetail['image'] ?? 'N/A')),  // Use default value for null
+        DataCell(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.add_shopping_cart, color: Colors.green),
+                onPressed: () => addToCart(classDetail),
+              ),
+            ],
           ),
-        ]);
-      }).toList(),
-    );
-  }
+        ),
+      ]);
+    }).toList(),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
