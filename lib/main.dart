@@ -16,7 +16,7 @@ class TripWorm extends StatelessWidget {
     return MaterialApp(
       routes: {
         RouterNames.Welcome: (context) => const Welcome(),
-        RouterNames.NewTrip: (context) => const NewTrip()
+        RouterNames.NewTrip: (context) => const NewCourse()
       },
       initialRoute: RouterNames.Welcome,
       //home: Welcome());

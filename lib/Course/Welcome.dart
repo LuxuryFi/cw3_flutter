@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_course_cw/Course/updateCourse.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_course_cw/Course/updateCourse.dart'; // Import Update Page
 
 class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);
@@ -59,16 +58,17 @@ class _WelcomeState extends State<Welcome> {
   // Display the class details in a table
   Widget _buildClassDetailsTable() {
     return DataTable(
+      columnSpacing: 20.0,
       columns: const [
-        DataColumn(label: Text('ID')),
-        DataColumn(label: Text('Day of Week')),
-        DataColumn(label: Text('Time')),
-        DataColumn(label: Text('Capacity')),
-        DataColumn(label: Text('Duration')),
-        DataColumn(label: Text('Price')),
-        DataColumn(label: Text('Description')),
-        DataColumn(label: Text('Teacher')),
-        DataColumn(label: Text('Actions')),
+        DataColumn(label: Text('ID', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Day of Week', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Time', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Capacity', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Duration', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Price', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Description', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Teacher', style: TextStyle(fontWeight: FontWeight.bold))),
+        DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold))),
       ],
       rows: classDetails.map((classDetail) {
         return DataRow(cells: [
@@ -82,10 +82,11 @@ class _WelcomeState extends State<Welcome> {
           DataCell(Text(classDetail['teacher'])),
           DataCell(
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // Update Button
                 IconButton(
-                  icon: const Icon(Icons.edit),
+                  icon: const Icon(Icons.edit, color: Colors.blue),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -102,7 +103,7 @@ class _WelcomeState extends State<Welcome> {
                 ),
                 // Delete Button
                 IconButton(
-                  icon: const Icon(Icons.delete),
+                  icon: const Icon(Icons.delete, color: Colors.red),
                   onPressed: () => deleteClassDetail(classDetail['_id']),
                 ),
               ],
@@ -120,16 +121,22 @@ class _WelcomeState extends State<Welcome> {
         onPressed: () {
           Navigator.pushNamed(context, '/newCourse');
         },
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.blueAccent,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       appBar: AppBar(
         title: const Text('Course CW'),
+        centerTitle: true,
+        backgroundColor: Colors.deepPurpleAccent,
+        elevation: 8.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(25)),
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/background.jpg"),
+            image: AssetImage("assets/images.jfif"),
             fit: BoxFit.cover,
           ),
         ),
@@ -139,12 +146,16 @@ class _WelcomeState extends State<Welcome> {
               : Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: SingleChildScrollView(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: Colors.blue.shade100.withOpacity(0.8),
+                    child: Card(
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      child: _buildClassDetailsTable(),
+                      color: Colors.white.withOpacity(0.8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: _buildClassDetailsTable(),
+                      ),
                     ),
                   ),
                 ),

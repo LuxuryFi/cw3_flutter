@@ -30,10 +30,7 @@ class _UpdateCourseState extends State<UpdateCourse> {
     _priceController.text = widget.classDetail['price'].toString();
     _descriptionController.text = widget.classDetail['description'];
     _teacherController.text = widget.classDetail['teacher'];
-
   }
-
-
 
   // Update class details in the database
   Future<void> updateClassDetails() async {
@@ -41,7 +38,6 @@ class _UpdateCourseState extends State<UpdateCourse> {
       Uri.parse('http://103.107.182.247:3000/${widget.classDetail['_id']}'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
-        'nameValuePairs':{
         'dayOfWeek': _dayOfWeekController.text,
         'time': _timeController.text,
         'capacity': int.parse(_capacityController.text),
@@ -50,7 +46,7 @@ class _UpdateCourseState extends State<UpdateCourse> {
         'description': _descriptionController.text,
         'teacher': _teacherController.text,
         'image': widget.classDetail['image'], // If you don't want to change the image, keep it the same
-      }}),
+      }),
     );
 
     if (response.statusCode == 200) {
@@ -65,51 +61,92 @@ class _UpdateCourseState extends State<UpdateCourse> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Update Class Details'),
+        centerTitle: true,
+        backgroundColor: Colors.deepPurpleAccent,
+        elevation: 6,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextField(
-                controller: _dayOfWeekController,
-                decoration: const InputDecoration(labelText: 'Day of Week'),
-              ),
-              TextField(
-                controller: _timeController,
-                decoration: const InputDecoration(labelText: 'Time'),
-              ),
-              TextField(
-                controller: _capacityController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Capacity'),
-              ),
-              TextField(
-                controller: _durationController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Duration'),
-              ),
-              TextField(
-                controller: _priceController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Price'),
-              ),
-              TextField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(labelText: 'Description'),
-              ),
-              TextField(
-                controller: _teacherController,
-                decoration: const InputDecoration(labelText: 'Teacher'),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: updateClassDetails,
-                child: const Text('Update'),
-              ),
-            ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.purpleAccent, Colors.blueAccent],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildTextField(_dayOfWeekController, 'Day of Week'),
+                _buildTextField(_timeController, 'Time'),
+                _buildNumberField(_capacityController, 'Capacity'),
+                _buildNumberField(_durationController, 'Duration'),
+                _buildNumberField(_priceController, 'Price'),
+                _buildTextField(_descriptionController, 'Description'),
+                _buildTextField(_teacherController, 'Teacher'),
+                const SizedBox(height: 20),
+                _buildUpdateButton(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(color: Colors.white),
+          filled: true,
+          fillColor: Colors.white.withOpacity(0.8),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNumberField(TextEditingController controller, String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(color: Colors.white),
+          filled: true,
+          fillColor: Colors.white.withOpacity(0.8),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUpdateButton() {
+    return ElevatedButton(
+      onPressed: updateClassDetails,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.deepPurpleAccent,
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: const Text(
+        'Update',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),
     );
   }

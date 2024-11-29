@@ -3,5 +3,5 @@ import 'package:flutter_course_cw/Course/newCourse.dart';
 
 class RouterNames {
   static const Welcome = "/welcome";
-  static const NewTrip = "/new_trip";
+  static const NewTrip = "/newCourse";
 }
