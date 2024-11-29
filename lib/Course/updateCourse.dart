@@ -37,7 +37,7 @@ class _UpdateCourseState extends State<UpdateCourse> {
     final response = await http.put(
       Uri.parse('http://103.107.182.247:3000/${widget.classDetail['_id']}'),
       headers: {'Content-Type': 'application/json'},
-      body: json.encode({
+      body: json.encode({'nameValuePairs': {
         'dayOfWeek': _dayOfWeekController.text,
         'time': _timeController.text,
         'capacity': int.parse(_capacityController.text),
@@ -46,7 +46,7 @@ class _UpdateCourseState extends State<UpdateCourse> {
         'description': _descriptionController.text,
         'teacher': _teacherController.text,
         'image': widget.classDetail['image'], // If you don't want to change the image, keep it the same
-      }),
+      }}),
     );
 
     if (response.statusCode == 200) {
